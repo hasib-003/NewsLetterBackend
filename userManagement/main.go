@@ -10,7 +10,7 @@ import (
 
 func main() {
 	config.ConnectDB()
-	err := config.DB.AutoMigrate(&models.User{}, &models.Publisher{}, &models.Admin{}, &models.Subscriber{})
+	err := config.DB.AutoMigrate(&models.Publisher{}, &models.Admin{}, &models.Subscriber{})
 	if err != nil {
 		panic(err)
 	}
