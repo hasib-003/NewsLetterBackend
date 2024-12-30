@@ -1,4 +1,4 @@
-module github.com/hasib-003/NewsLetterBackend/publisherService
+module github.com/hasib-003/NewsLetterBackend/usermanagement
 
 go 1.23.3
 
@@ -7,8 +7,6 @@ require (
 	github.com/hasib-003/NewsLetterBackend/common v0.0.0-20241227084741-4eb47eeb2cdb
 	gorm.io/gorm v1.25.12
 )
-
-replace github.com/hasib-003/NewsLetterBackend/common => ../common
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect

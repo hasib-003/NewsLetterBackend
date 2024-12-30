@@ -9,6 +9,7 @@ type Publication struct {
 	Posts           []Post `json:"posts"`
 }
 type Post struct {
+	gorm.Model
 	Title         string `json:"title"`
 	Description   string `json:"description"`
 	PublicationId uint   `json:"publication_id"`

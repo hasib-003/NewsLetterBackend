@@ -15,5 +15,5 @@ func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
 	publisherHandler := handler.NewPublisherHandler(publisherService)
 
 	router.POST("/createPublication", publisherHandler.CreatePublication)
-	router.POST("/createPost", publisherHandler.CreatePost)
+	router.POST("/createPost/:publicationId", publisherHandler.CreatePost)
 }
