@@ -1,6 +1,9 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"github.com/hasib-003/NewsLetterBackend/usermanagement/internal/models"
+	"gorm.io/gorm"
+)
 
 type UserRepository struct {
 	db *gorm.DB
@@ -17,5 +20,11 @@ func (repo *UserRepository) CreateUser(user interface{}) error {
 	}
 	repo.db = repo.db.Debug()
 	return nil
-
+}
+func (repo *UserRepository) GetPublisherById(publisherId int) (*models.Publisher, error) {
+	var publisher models.Publisher
+	if err := repo.db.Where("id = ?", publisherId).First(&publisher).Error; err != nil {
+		return nil, err
+	}
+	return &publisher, nil
 }

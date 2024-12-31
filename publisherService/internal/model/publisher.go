@@ -5,6 +5,7 @@ import "gorm.io/gorm"
 type Publication struct {
 	gorm.Model
 	Type            string `json:"type"`
+	PublisherId     int    `json:"publisher_id"`
 	PublicationName string `json:"publication_name"`
 	Posts           []Post `json:"posts"`
 }

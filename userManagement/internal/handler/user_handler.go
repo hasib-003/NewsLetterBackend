@@ -7,6 +7,7 @@ import (
 	"github.com/hasib-003/NewsLetterBackend/usermanagement/internal/service"
 	"io"
 	"net/http"
+	"strconv"
 )
 
 type UserHandler struct {
@@ -80,4 +81,46 @@ func (handler *UserHandler) CreateUser(c *gin.Context) {
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user type"})
 	}
+}
+
+func (handler *UserHandler) SubscribeToPublication(c *gin.Context) {
+	userIdStr := c.Param("userId")
+	publicationIdStr := c.Param("publicationId")
+	userId, err := strconv.ParseInt(userIdStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while parsing user id"})
+	}
+	publicationId, err := strconv.ParseInt(publicationIdStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while parsing publication id"})
+	}
+	err = handler.userService.SubscribeToPublication(userId, publicationId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+}
+
+func (handler *UserHandler) UnsubscribeFromPublication(c *gin.Context) {
+	userIdStr := c.Param("userId")
+	publicationIdStr := c.Param("publicationId")
+
+	userId, err := strconv.ParseInt(userIdStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while parsing user ID"})
+		return
+	}
+
+	publicationId, err := strconv.ParseInt(publicationIdStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while parsing publication ID"})
+		return
+	}
+
+	err = handler.userService.UnsubscribeFromPublication(userId, publicationId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "unsubscribed from publication successfully"})
 }

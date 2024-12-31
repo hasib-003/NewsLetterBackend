@@ -1,0 +1,16 @@
+syntax ="proto3";
+package subscription;
+option go_package="./subscription";
+
+service Subscription{
+    rpc SubscribeToPublication(SubscriptionRequest) returns (SubscriptionResponse);
+    rpc UnSubscribeToPublication(SubscriptionRequest) returns (SubscriptionResponse);
+}
+message SubscriptionRequest{
+    int64 userId=1;
+    int64 publicationId=2;
+}
+message SubscriptionResponse{
+    bool success=1;
+    string message=2;
+}
