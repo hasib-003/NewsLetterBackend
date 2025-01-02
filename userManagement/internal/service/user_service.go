@@ -6,15 +6,19 @@ import (
 	"github.com/hasib-003/NewsLetterBackend/usermanagement/internal/models"
 	"github.com/hasib-003/NewsLetterBackend/usermanagement/internal/repository"
 	"github.com/hasib-003/NewsLetterBackend/usermanagement/proto/subscription"
+	"log"
 )
 
 type UserService struct {
 	userRepository     *repository.UserRepository
-	subscriptionClient *subscription.SubscriptionClient
+	subscriptionClient subscription.SubscriptionClient
 }
 
-func NewUserService(userRepository *repository.UserRepository) *UserService {
-	return &UserService{userRepository: userRepository}
+func NewUserService(userRepository *repository.UserRepository, subscriptionClient subscription.SubscriptionClient) *UserService {
+	return &UserService{
+		userRepository:     userRepository,
+		subscriptionClient: subscriptionClient,
+	}
 }
 
 func (s *UserService) CreateUser(userType string, userInput interface{}) error {
@@ -63,9 +67,23 @@ func (s *UserService) UnsubscribeFromPublication(userId int64, publicationId int
 		PublicationId: publicationId,
 	}
 
-	_, err = s.subscriptionClient.UnsubscribeFromPublication(context.Background(), req)
+	_, err = s.subscriptionClient.UnSubscribeToPublication(context.Background(), req)
 	if err != nil {
 		return fmt.Errorf("unsubscribe from publication error: %v", err)
 	}
 	return nil
+}
+
+func (s *UserService) ListSubscriptions(userId int64) ([]*models.Subscriber, error) {
+	req := &subscription.GetSubscriptionsRequest{
+		UserId: userId,
+	}
+
+	resp, err := s.subscriptionClient.GetAllSubscriptions(context.Background(), req)
+	if err != nil {
+		log.Println("Error fetching subscriptions:", err)
+		return nil, err
+	}
+
+	return resp.GetAllSubscriptions(), nil
 }

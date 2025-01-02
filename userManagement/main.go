@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/hasib-003/NewsLetterBackend/common/config"
 	"github.com/hasib-003/NewsLetterBackend/usermanagement/internal/models"
 	"github.com/hasib-003/NewsLetterBackend/usermanagement/router"
@@ -27,12 +26,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	server := gin.Default()
-	router.RegisterRoutes(server)
-	log.Println("server start......")
+	server := router.NewRouter(subscriberConn)
+
+	// Start the HTTP server
+	log.Println("Server starting on port 8081...")
 	err = server.Run(":8081")
 	if err != nil {
-		panic(err)
+		log.Fatal("Failed to start HTTP server:", err)
 	}
 
 }

@@ -124,3 +124,18 @@ func (handler *UserHandler) UnsubscribeFromPublication(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "unsubscribed from publication successfully"})
 }
+
+func (handler *UserHandler) ListSubscriptions(c *gin.Context) {
+	userIdStr := c.Param("userId")
+	userId, err := strconv.ParseInt(userIdStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while parsing user id"})
+	}
+	subscriptions, err := handler.userService.ListSubscriptions(userId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch subscriptions"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"subscriptions": subscriptions})
+}

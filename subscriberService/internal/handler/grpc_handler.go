@@ -31,3 +31,22 @@ func (h *SubscriptionHandler) UnSubscribeToPublication(ctx context.Context, req 
 		Message: "successfully subscribed to publication",
 	}, nil
 }
+
+func (h *SubscriptionHandler) GetAllSubscriptions(ctx context.Context, req *subscription.SubscriptionRequest) (*subscription.GetSubscriptionsResponse, error) {
+	subscriptions, err := h.SubscriptionService.GetAllSubscriptions(req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	var subscriptionList []*subscription.SubscribedTopic
+	for _, sub := range subscriptions {
+		subscriptionList = append(subscriptionList, &subscription.SubscribedTopic{
+			UserId:        sub,
+			PublicationId: 4,
+		})
+	}
+
+	return &subscription.GetSubscriptionsResponse{
+		Subscriptions: subscriptionList,
+	}, nil
+}

@@ -1,6 +1,9 @@
 package service
 
-import "github.com/hasib-003/NewsLetterBackend/subscriberService/internal/repository"
+import (
+	"github.com/hasib-003/NewsLetterBackend/subscriberService/internal/model"
+	"github.com/hasib-003/NewsLetterBackend/subscriberService/internal/repository"
+)
 
 type SubscriptionService struct {
 	repository *repository.SubscriptionRepository
@@ -25,4 +28,8 @@ func (s *SubscriptionService) UnSubscribeToPublication(userId int64, publication
 		return err
 	}
 	return nil
+}
+
+func (s *SubscriptionService) GetAllSubscriptions(userId int64) ([]model.Subscription, error) {
+	return s.repository.GetAllSubscriptions(userId)
 }

@@ -34,3 +34,11 @@ func (repo *SubscriptionRepository) UnSubscribeToPublication(userId int64, publi
 	}
 	return nil
 }
+
+func (repo *SubscriptionRepository) GetAllSubscriptions(userId int64) ([]model.Subscription, error) {
+	var subscriptions []model.Subscription
+	if err := repo.DB.Where("user_id = ?", userId).Find(&subscriptions).Error; err != nil {
+		return nil, err
+	}
+	return subscriptions, nil
+}

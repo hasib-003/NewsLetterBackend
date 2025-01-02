@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"github.com/hasib-003/NewsLetterBackend/subscriberService/internal/model"
+	"github.com/gin-gonic/gin"
 	"github.com/hasib-003/NewsLetterBackend/subscriberService/internal/service"
+	"net/http"
 )
 
 type SubscriptionInternalHandler struct {
@@ -15,6 +16,6 @@ func NewSubscriptionInternalHandler(service *service.SubscriptionService) *Subsc
 	}
 }
 
-func (h *SubscriptionInternalHandler) GetAllSubscription() (*model.Subscription, error) {
-	return nil, nil
+func (h *SubscriptionInternalHandler) GetAllSubscription(c *gin.Context) {
+	c.JSON(http.StatusOK, "fjf")
 }
